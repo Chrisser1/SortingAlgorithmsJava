@@ -13,40 +13,54 @@ public class VisualizerController {
         this.root = root;
     }
 
-    public void visualizeArray(int[] array) {
-        double containerWidth = this.root.getWidth(); // Get current width
-        double containerHeight = this.root.getHeight(); // Get current height
+    // Consolidated visualizeArray method with optional indices for highlights
+    public void visualizeArray(int[] array, int lookingAtIndex, int comparingToIndex, int minIdx) {
+        double containerWidth = this.root.getWidth();
+        double containerHeight = this.root.getHeight();
 
         // Avoid division by zero if container dimensions are not yet set
         if (containerWidth <= 0 || containerHeight <= 0) {
             return;
         }
 
-        // Calculate total spacing between bars
         double totalSpacing = (array.length - 1) * 3;
-
-        // Adjust container width by subtracting total spacing
         double adjustedWidth = containerWidth - totalSpacing;
-
-        // Calculate exact width for each bar
         double barWidth = adjustedWidth / array.length;
-        double maxValue = ArrayUtils.getMaxValue(array); // Get maximum value in the array
+        double maxValue = ArrayUtils.getMaxValue(array);
 
-        // Ensure updates happen on the JavaFX Application Thread
         Platform.runLater(() -> {
-            root.getChildren().clear(); // Clear existing bars
+            root.getChildren().clear();
 
-            for (int value : array) {
+            for (int i = 0; i < array.length; i++) {
+                int value = array[i];
                 Rectangle bar = new Rectangle();
                 bar.setWidth(barWidth);
 
-                // Scale height of each bar relative to the maximum value in the array
                 double scaledHeight = (value / maxValue) * containerHeight;
                 bar.setHeight(scaledHeight);
 
-                bar.setFill(Color.BLUE);
+                // Determine bar color based on highlight indices
+                if (i == lookingAtIndex) {
+                    bar.setFill(Color.YELLOW); // Current index being evaluated
+                } else if (i == comparingToIndex) {
+                    bar.setFill(Color.RED); // Currently comparing
+                } else if (i == minIdx) {
+                    bar.setFill(Color.GREEN); // Current minimum
+                } else {
+                    bar.setFill(Color.BLUE); // Default color
+                }
+
                 root.getChildren().add(bar);
             }
         });
+    }
+
+    // Overloaded methods to provide backward compatibility and ease of use
+    public void visualizeArray(int[] array, int lookingAtIndex, int comparingToIndex) {
+        visualizeArray(array, lookingAtIndex, comparingToIndex, -1);
+    }
+
+    public void visualizeArray(int[] array) {
+        visualizeArray(array, -1, -1, -1);
     }
 }

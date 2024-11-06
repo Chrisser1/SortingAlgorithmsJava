@@ -9,11 +9,20 @@ public class QuickSort extends SortingAlgorithm {
     }
 
     private void quickSort(int[] array, int low, int high) {
-        if (low < high) {
-            int pivotIndex = partition(array, low, high);
-            quickSort(array, low, pivotIndex - 1);
-            quickSort(array, pivotIndex + 1, high);
-        }
+        new Thread(() -> {
+            try {
+                if (low < high) {
+                    int pivotIndex = partition(array, low, high);
+                    quickSort(array, low, pivotIndex - 1);
+                    quickSort(array, pivotIndex + 1, high);
+
+                    Thread.sleep(sleepTime);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+
     }
 
     private int partition(int[] array, int low, int high) {

@@ -1,7 +1,9 @@
+// Algorithms
 import algorithms.BubbleSort;
 import algorithms.QuickSort;
 import algorithms.SelectionSort;
 import algorithms.SortingAlgorithm;
+// JavaFX
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -11,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.Slider;
+// Utils
 import utils.ArrayUtils;
 import visualization.VisualizerController;
 
@@ -51,8 +55,18 @@ public class Main extends Application {
             controller.visualizeArray(array); // Update visualization after sorting
         });
 
+        // Add a sleepTime changer
+        Slider sleepTimeSlider = new Slider(1, 500, SortingAlgorithm.getSleepTime());
+        sleepTimeSlider.setShowTickLabels(true);
+        sleepTimeSlider.setShowTickMarks(true);
+
+        // Listener to update sleepTime based on slider value
+        sleepTimeSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            SortingAlgorithm.setSleepTime(newValue.intValue()); // Update sleepTime dynamically
+        });
+
         HBox controlPanel = new HBox(10); // 10px spacing between controls
-        controlPanel.getChildren().addAll(generateButton, sortButton, sortingMethods);
+        controlPanel.getChildren().addAll(generateButton, sortButton, sortingMethods, sleepTimeSlider);
 
         // Set up the main layout with VBox to include control panel and visualization area
         VBox root = new VBox(10); // 10px spacing between sections
