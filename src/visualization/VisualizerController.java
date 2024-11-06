@@ -1,7 +1,9 @@
 package visualization;
 
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import utils.ArrayUtils;
@@ -50,7 +52,11 @@ public class VisualizerController {
                     bar.setFill(Color.BLUE); // Default color
                 }
 
-                root.getChildren().add(bar);
+                // Wrap bar in a VBox to make it grow upwards
+                VBox barWrapper = new VBox(bar);
+                barWrapper.setAlignment(Pos.BOTTOM_CENTER);
+
+                root.getChildren().add(barWrapper);
             }
         });
     }
