@@ -22,7 +22,7 @@ public class Main extends Application {
     private static VisualizerController controller;
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 400;
-    private static final int ARRAY_SIZE = 100;
+    private static final int ARRAY_SIZE = 200;
     private int[] array = ArrayUtils.generateRandomArray(ARRAY_SIZE, 1000); // Generate initial array
 
     @Override
